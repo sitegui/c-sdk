@@ -368,7 +368,7 @@ nrtxn_t* nr_txn_begin(nrapp_t* app,
   }
 
   if (NR_APP_OK != app->state) {
-    nrl_error(NRL_TXN, "nr_txn_begin: NR_APP_OK != app->state");
+    nrl_error(NRL_TXN, "nr_txn_begin: NR_APP_OK != app->state: %d", app->state);
     return 0;
   }
 
