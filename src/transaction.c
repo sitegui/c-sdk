@@ -120,7 +120,11 @@ newrelic_txn_t* newrelic_start_transaction(newrelic_app_t* app,
   nrt_mutex_lock(&app->lock);
   {
     options = newrelic_get_transaction_options(app->config);
+    nrl_error(NRL_INSTRUMENT, "calling nr_txn_begin");
     transaction->txn = nr_txn_begin(app->app, options, attribute_config);
+    if (NULL == transaction->txn) {
+      nrl_error(NRL_INSTRUMENT, "nr_txn_begin returned null");
+    }
   }
   nrt_mutex_unlock(&app->lock);
   if (NULL == transaction->txn) {

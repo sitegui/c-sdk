@@ -363,14 +363,17 @@ nrtxn_t* nr_txn_begin(nrapp_t* app,
   nr_slab_t* segment_slab;
 
   if (0 == app) {
+    nrl_error(NRL_TXN, "nr_txn_begin: 0 == app");
     return 0;
   }
 
   if (NR_APP_OK != app->state) {
+    nrl_error(NRL_TXN, "nr_txn_begin: NR_APP_OK != app->state");
     return 0;
   }
 
   if (NULL == opts) {
+    nrl_error(NRL_TXN, "nr_txn_begin: NULL == opts");
     return NULL;
   }
 
@@ -381,6 +384,7 @@ nrtxn_t* nr_txn_begin(nrapp_t* app,
   segment_slab
       = nr_slab_create(sizeof(nr_segment_t), sizeof(nr_segment_t) * 100);
   if (nrunlikely(NULL == segment_slab)) {
+    nrl_error(NRL_TXN, "nr_txn_begin: NULL == segment_slab");
     return NULL;
   }
 

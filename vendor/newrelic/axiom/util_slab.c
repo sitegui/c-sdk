@@ -4,6 +4,7 @@
 
 #include "util_memory.h"
 #include "util_slab_private.h"
+#include "util_logging.h"
 
 static nr_slab_page_t* nr_slab_page_create(size_t page_size,
                                            nr_slab_page_t* prev) {
@@ -44,6 +45,7 @@ nr_slab_t* nr_slab_create(size_t object_size, size_t page_size) {
   long sys_page_size;
 
   if (nrunlikely(0 == object_size)) {
+    nrl_error(NRL_TXN, "nr_slab_create: 0 == object_size");
     return NULL;
   }
 
@@ -96,6 +98,7 @@ nr_slab_t* nr_slab_create(size_t object_size, size_t page_size) {
   if (nrunlikely((slab->object_size + sizeof(nr_slab_page_t))
                  > slab->page_size)) {
     nr_free(slab);
+    nrl_error(NRL_TXN, "nr_slab_create: (slab->object_size + sizeof(nr_slab_page_t)) > slab->page_size)");
     return NULL;
   }
 
