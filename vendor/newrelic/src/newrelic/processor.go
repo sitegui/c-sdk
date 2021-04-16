@@ -306,6 +306,16 @@ func (p *Processor) processAppInfo(m AppInfoMessage) {
 	if nil != m.ID {
 		if _, ok := p.harvests[*m.ID]; ok {
 			r.RunIDValid = true
+
+			// Even when the agent is connected, we want to update its last activity
+			// so that the connection does not time out.
+			// Note: we must *not* use the variable `app` because it alters the flow
+			// in the defered function above.
+			appTemp := p.apps[m.Info.Key()]
+			if nil != appTemp {
+				appTemp.LastActivity = time.Now()
+			}
+
 			return
 		}
 		// This agent run id must be out of date, fall through:
